@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Select Box With Select 2 and Jquery</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+            <label for="">Single Select Box</label>
+          <select
+            style="width: 200px"
+            class="single-select"
+            name="township"
+          ></select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+
+            <label for="">Multiple Select Box</label>
+          <select
+            style="width: 200px"
+            class="multiple-select"
+            name="townships[]"
+            multiple="multiple"
+          ></select>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+      $(".single-select").select2({
+        ajax: {
+          url: "https://suluck2u.com/api/townships/collection",
+          data: function (params) {
+            return {
+              search: params.term, // search term
+              page: params.page || 1,
+            };
+
+            // let query = {
+            //   search: params.term,
+            //   page: params.page || 1,
+            // };
+            // return query;
+          },
+          processResults: function (data) {
+            const { data: townships, links, meta } = data;
+            // console.log(townships);
+            return {
+              results: townships?.map((township) => ({
+                id: township.id,
+                text: township.name,
+              })),
+
+              pagination: {
+                more: Boolean(links.next),
+              },
+            };
+          },
+        },
+      });
+    });
+
+    // This is for multiple select box
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+      $(".multiple-select").select2({
+        ajax: {
+          url: "https://suluck2u.com/api/townships/collection",
+          data: function (params) {
+            return {
+              search: params.term, // search term
+              page: params.page || 1,
+            };
+
+            // let query = {
+            //   search: params.term,
+            //   page: params.page || 1,
+            // };
+            // return query;
+          },
+          processResults: function (data) {
+            const { data: townships, links, meta } = data;
+            // console.log(townships);
+            return {
+              results: townships?.map((township) => ({
+                id: township.id,
+                text: township.name,
+              })),
+
+              pagination: {
+                more: Boolean(links.next),
+              },
+            };
+          },
+        },
+      });
+    });
+  </script>
+</html>
